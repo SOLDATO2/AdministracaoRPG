@@ -1,13 +1,14 @@
 package com.example.mvvm2.view
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.navigation.NavHostController
@@ -16,7 +17,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.ui.Alignment
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.material3.Button
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 
 
@@ -24,32 +27,16 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val navController = rememberNavController()
-            MainNavHost(navController)
+            MainScreen()
         }
     }
 }
 
-@Composable
-fun MainNavHost(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = "main") {
-        composable("main") {
-            MainScreen(navController)
-        }
-        composable("personagem") {
-            GenericScreen("Gerenciar Personagens: Em Desenvolvimento!")
-        }
-        composable("classe") {
-            GenericScreen("Gerenciar Classes: Em Desenvolvimento!")
-        }
-        composable("raca") {
-            GenericScreen("Gerenciar Raças: Em Desenvolvimento!")
-        }
-    }
-}
 
 @Composable
-fun MainScreen(navController: NavHostController) {
+fun MainScreen() {
+    val context = LocalContext.current
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -58,7 +45,9 @@ fun MainScreen(navController: NavHostController) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Button(
-            onClick = { navController.navigate("personagem") },
+            onClick = {
+                Toast.makeText(context, "Gerenciamento de Personagens: Em Desenvolvimento!", Toast.LENGTH_SHORT).show()
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)
@@ -67,7 +56,9 @@ fun MainScreen(navController: NavHostController) {
         }
 
         Button(
-            onClick = { navController.navigate("classe") },
+            onClick = {
+                Toast.makeText(context, "Gerenciamento de Classes: Em Desenvolvimento!", Toast.LENGTH_SHORT).show()
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)
@@ -76,26 +67,15 @@ fun MainScreen(navController: NavHostController) {
         }
 
         Button(
-            onClick = { navController.navigate("raca") },
+            onClick = {
+                val intent = Intent(context, GerenciarRacaActivity::class.java)
+                context.startActivity(intent)
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)
         ) {
             Text("Gerenciar Raças")
         }
-    }
-}
-
-//substituir por Telas especificas
-@Composable
-fun GenericScreen(message: String) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(text = message)
     }
 }

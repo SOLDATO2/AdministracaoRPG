@@ -48,8 +48,15 @@ android {
 }
 
 dependencies {
+    implementation ("androidx.navigation:navigation-compose:2.8.0")
 
-    implementation("androidx.navigation:navigation-compose:2.8.3")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    //implementation("com.google.android.material:material:1.10.0")
+    implementation("androidx.activity:activity:1.9.3")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.compose.foundation:foundation-layout-android:1.6.0")
+    implementation("com.google.android.material:material:1.10.0")
+    //implementation("androidx.compose.material3:material3-android:1.3.1")
     val roomVersion = "2.6.1"
     implementation("androidx.room:room-runtime:$roomVersion")
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
