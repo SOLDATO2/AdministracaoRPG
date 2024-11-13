@@ -37,7 +37,7 @@ class AtualizarRacaActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Recuperando dados passados pela intent
+        //pega os dados do intent
         val racaId = intent.getIntExtra("RACA_ID", -1)
         val racaNome = intent.getStringExtra("RACA_NOME") ?: ""
         val racaHabilidade = intent.getStringExtra("RACA_HABILIDADE") ?: ""

@@ -11,14 +11,15 @@ import kotlinx.coroutines.launch
 
 class RacaViewModel(private val racaDao: RacaDao) : ViewModel() {
 
-    // Estados observáveis para os campos de busca
+    //estado observavel de busca
     var buscaNome = mutableStateOf("")
         private set
 
     var buscaHabilidade = mutableStateOf("")
         private set
+    ////////////////
 
-    // Listas observáveis para exibição na UI
+    //listas para mostrar no View
     var listaRacas = mutableStateOf<List<Raca>>(emptyList())
         private set
 
@@ -28,7 +29,7 @@ class RacaViewModel(private val racaDao: RacaDao) : ViewModel() {
     var listaRacasPorHabilidadeEspecifica = mutableStateOf<List<Raca>>(emptyList())
         private set
 
-    // Funções para atualizar os estados de busca
+    //atualizar estado de busca
     fun setBuscaNome(nome: String) {
         buscaNome.value = nome
     }
@@ -37,12 +38,12 @@ class RacaViewModel(private val racaDao: RacaDao) : ViewModel() {
         buscaHabilidade.value = habilidade
     }
 
-    // Método para salvar uma nova raça
+    //salvar raça nova
     fun salvarRaca(nome: String, habilidadeEspecifica: String) {
         viewModelScope.launch {
             val novaRaca = Raca(nome = nome, habilidadeEspecifica = habilidadeEspecifica)
             racaDao.inserir(novaRaca)
-            // Atualiza as listas após a inserção
+            //atualizar listas depois de inserir
             buscarTodasAsRacas()
             if (buscaNome.value.isNotEmpty()) {
                 buscarPorNome(buscaNome.value)
@@ -53,11 +54,11 @@ class RacaViewModel(private val racaDao: RacaDao) : ViewModel() {
         }
     }
 
-    // Método para atualizar uma raça existente
+    //update raça
     fun atualizarRaca(raca: Raca) {
         viewModelScope.launch {
             racaDao.atualizar(raca)
-            // Atualiza as listas após a atualização
+            //atualiza as listas depois de atualizar///
             buscarTodasAsRacas()
             if (buscaNome.value.isNotEmpty()) {
                 buscarPorNome(buscaNome.value)
@@ -65,14 +66,15 @@ class RacaViewModel(private val racaDao: RacaDao) : ViewModel() {
             if (buscaHabilidade.value.isNotEmpty()) {
                 buscarPorHabilidadeEspecifica(buscaHabilidade.value)
             }
+            //////////////////////////////////////////////
         }
     }
 
-    // Método para excluir uma raça
+    //deletar raça
     fun excluirRaca(raca: Raca) {
         viewModelScope.launch {
             racaDao.deletar(raca)
-            // Reexecuta as buscas após a exclusão ser concluída
+            //atualiza as listas depois de deletar///
             buscarTodasAsRacas()
             if (buscaNome.value.isNotEmpty()) {
                 buscarPorNome(buscaNome.value)
@@ -80,24 +82,23 @@ class RacaViewModel(private val racaDao: RacaDao) : ViewModel() {
             if (buscaHabilidade.value.isNotEmpty()) {
                 buscarPorHabilidadeEspecifica(buscaHabilidade.value)
             }
+            //////////////////////////////////////////////
         }
     }
 
-    // Método para buscar todas as raças
+
     fun buscarTodasAsRacas() {
         viewModelScope.launch {
             listaRacas.value = racaDao.buscarTodos()
         }
     }
 
-    // Método para buscar raças por nome
     fun buscarPorNome(nome: String) {
         viewModelScope.launch {
             listaRacasPorNome.value = racaDao.buscarPorNome(nome)
         }
     }
 
-    // Método para buscar raças por habilidade específica
     fun buscarPorHabilidadeEspecifica(habilidade: String) {
         viewModelScope.launch {
             listaRacasPorHabilidadeEspecifica.value = racaDao.buscarPorHabilidadeEspecifica(habilidade)
