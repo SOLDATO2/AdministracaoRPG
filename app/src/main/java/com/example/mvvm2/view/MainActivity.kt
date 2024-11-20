@@ -53,7 +53,8 @@ fun MainScreen() {
 
         Button(
             onClick = {
-                Toast.makeText(context, "Gerenciamento de Classes: Em Desenvolvimento!", Toast.LENGTH_SHORT).show()
+                val intent = Intent(context, GerenciarClasseActivity::class.java)
+                context.startActivity(intent)
             },
             modifier = Modifier
                 .fillMaxWidth()
