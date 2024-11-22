@@ -1,4 +1,4 @@
-package com.example.mvvm2.view
+package com.example.mvvm2.view.raca
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -69,11 +71,11 @@ class GerenciarRacaActivity : ComponentActivity() {
 @Composable
 fun GerenciarRacaScreen(racaViewModel: RacaViewModel) {
 
-    //campos cadastro
+    // Campos de cadastro
     var nome by remember { mutableStateOf("") }
     var habilidadeEspecifica by remember { mutableStateOf("") }
 
-    //estados pro menu dropdown
+    // Estados para os menus colapsáveis
     var cadastrarRacaExpanded by remember { mutableStateOf(false) }
     var buscarTodosExpanded by remember { mutableStateOf(false) }
     var buscarPorNomeExpanded by remember { mutableStateOf(false) }
@@ -82,7 +84,7 @@ fun GerenciarRacaScreen(racaViewModel: RacaViewModel) {
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         Text(text = "Gerenciar Raças", style = MaterialTheme.typography.titleLarge)
 
-        //Menu Cadastrar Raça
+        // Menu para Cadastrar Raça
         ExpandableMenu(
             title = "Cadastrar Raça",
             expanded = cadastrarRacaExpanded,
@@ -97,7 +99,7 @@ fun GerenciarRacaScreen(racaViewModel: RacaViewModel) {
             )
         }
 
-        //Menu para Buscar por Nome
+        // Menu para Buscar por Nome
         ExpandableMenu(
             title = "Buscar por Nome",
             expanded = buscarPorNomeExpanded,
@@ -106,7 +108,7 @@ fun GerenciarRacaScreen(racaViewModel: RacaViewModel) {
             BuscaPorNome(racaViewModel = racaViewModel)
         }
 
-        //Menu para Buscar por Habilidade
+        // Menu para Buscar por Habilidade
         ExpandableMenu(
             title = "Buscar por Habilidade",
             expanded = buscarPorHabilidadeExpanded,
@@ -115,7 +117,7 @@ fun GerenciarRacaScreen(racaViewModel: RacaViewModel) {
             BuscaPorHabilidade(racaViewModel = racaViewModel)
         }
 
-        //Menu para Mostrar todos
+        // Menu para Mostrar todos
         ExpandableMenu(
             title = "Mostrar Todos",
             expanded = buscarTodosExpanded,
@@ -127,7 +129,7 @@ fun GerenciarRacaScreen(racaViewModel: RacaViewModel) {
 }
 
 @Composable
-fun ExpandableMenu( // menu expandir/colapsar
+fun ExpandableMenu(
     title: String,
     expanded: Boolean,
     onExpandChange: (Boolean) -> Unit,
@@ -179,8 +181,8 @@ fun CadastroRacaMenu(
         Button(
             onClick = {
                 racaViewModel.salvarRaca(nome, habilidadeEspecifica)
-                setNome("")  // limpar campo nome
-                setHabilidadeEspecifica("")  // limpar o campo "habilidade especifica"
+                setNome("")  // Limpa o campo 'Nome'
+                setHabilidadeEspecifica("")  // Limpa o campo 'Habilidade Específica'
                 Toast.makeText(context, "Raça cadastrada!", Toast.LENGTH_LONG).show()
             },
             modifier = Modifier.padding(top = 8.dp)
@@ -192,10 +194,10 @@ fun CadastroRacaMenu(
 }
 
 @Composable
-fun RacaItem( //Botao, row e etc para cada item na lista raça
+fun RacaItem(
     raca: Raca,
-    onEdit: (Raca) -> Unit, // passar o dao para atualizar
-    onDeleteRequest: (Raca) -> Unit //passa o dao para deletar
+    onEdit: (Raca) -> Unit,
+    onDeleteRequest: (Raca) -> Unit
 ) {
     Column(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
         Row(modifier = Modifier.fillMaxWidth()) {
@@ -220,9 +222,9 @@ fun RacaItem( //Botao, row e etc para cada item na lista raça
 
 @Composable
 fun RacaList(
-    listaRacas: List<Raca>, // lista de racas para iterar
-    onEdit: (Raca) -> Unit, // passa o dao atualizar
-    onDelete: (Raca) -> Unit //passa o dao delete
+    listaRacas: List<Raca>,
+    onEdit: (Raca) -> Unit,
+    onDelete: (Raca) -> Unit
 ) {
     var showDialog by remember { mutableStateOf(false) }
     var racaToDelete by remember { mutableStateOf<Raca?>(null) }
@@ -244,7 +246,7 @@ fun RacaList(
         Text("Nenhuma raça encontrada.", modifier = Modifier.padding(8.dp))
     }
 
-    //pop up confirmação
+    // Diálogo de confirmação
     if (showDialog) {
         AlertDialog(
             onDismissRequest = {
@@ -255,7 +257,8 @@ fun RacaList(
                 Text(text = "Confirmar Exclusão")
             },
             text = {
-                Text("Tem certeza de que deseja excluir esta raça?")
+                Text("Tem certeza de que deseja excluir esta raça?" +
+                        " Qualquer Personagem com essa raça será excluído.")
             },
             confirmButton = {
                 Button(

@@ -1,13 +1,15 @@
 package com.example.mvvm2.viewmodel
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.compose.runtime.mutableStateOf
 import com.example.mvvm2.model.dao.ClasseDao
 import com.example.mvvm2.model.entity.Classe
 import kotlinx.coroutines.launch
 
+
 class ClasseViewModel(private val classeDao: ClasseDao) : ViewModel() {
+
 
     // Estados observáveis para os campos de busca
     var buscaNome = mutableStateOf("")

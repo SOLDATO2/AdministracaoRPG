@@ -22,6 +22,9 @@ interface ClasseDao {
     @Query("SELECT * FROM classe WHERE variante LIKE :variante")
     suspend fun buscarPorVariante(variante: String): List<Classe>
 
+    @Query("SELECT * FROM classe WHERE id = :id")
+    suspend fun buscarPorId(id: Int): Classe?
+
     @Update
     suspend fun atualizar(classe: Classe)
 

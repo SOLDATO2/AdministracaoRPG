@@ -22,6 +22,9 @@ interface RacaDao {
     @Query("SELECT * FROM raca WHERE habilidadeEspecifica LIKE :habilidade")
     suspend fun buscarPorHabilidadeEspecifica(habilidade: String): List<Raca>
 
+    @Query("SELECT * FROM raca WHERE id = :id")
+    suspend fun buscarPorId(id: Int): Raca?
+
     @Update
     suspend fun atualizar(raca: Raca)
 

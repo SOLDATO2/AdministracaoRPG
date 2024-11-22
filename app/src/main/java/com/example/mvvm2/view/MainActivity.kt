@@ -2,7 +2,6 @@ package com.example.mvvm2.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
@@ -17,6 +16,9 @@ import androidx.compose.material3.Button
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.example.mvvm2.view.classe.GerenciarClasseActivity
+import com.example.mvvm2.view.personagem.GerenciarPersonagensActivity
+import com.example.mvvm2.view.raca.GerenciarRacaActivity
 
 
 class MainActivity : ComponentActivity() {
@@ -42,7 +44,8 @@ fun MainScreen() {
     ) {
         Button(
             onClick = {
-                Toast.makeText(context, "Gerenciamento de Personagens: Em Desenvolvimento!", Toast.LENGTH_SHORT).show()
+                val intent = Intent(context, GerenciarPersonagensActivity::class.java)
+                context.startActivity(intent)
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -62,7 +65,6 @@ fun MainScreen() {
         ) {
             Text("Gerenciar Classes")
         }
-
         Button(
             onClick = {
                 val intent = Intent(context, GerenciarRacaActivity::class.java)

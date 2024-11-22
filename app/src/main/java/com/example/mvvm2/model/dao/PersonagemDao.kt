@@ -40,3 +40,4 @@ interface PersonagemDao {
     @Delete
     suspend fun deletar(personagem: Personagem)
 }
+

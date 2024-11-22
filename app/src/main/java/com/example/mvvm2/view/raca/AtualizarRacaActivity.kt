@@ -1,6 +1,9 @@
-package com.example.mvvm2.view
+package com.example.mvvm2.view.raca
+
+
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -17,32 +20,34 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.mvvm2.model.database.AppDatabase
-import com.example.mvvm2.model.entity.Classe
-import com.example.mvvm2.viewmodel.ClasseViewModel
-import com.example.mvvm2.viewmodel.factory.ClasseViewModelFactory
+import com.example.mvvm2.model.entity.Raca
+import com.example.mvvm2.viewmodel.RacaViewModel
+import com.example.mvvm2.viewmodel.factory.RacaViewModelFactory
 
-class AtualizarClasseActivity : ComponentActivity() {
-    private val viewModel: ClasseViewModel by viewModels {
+
+class AtualizarRacaActivity : ComponentActivity() {
+    private val viewModel: RacaViewModel by viewModels {
         val database = AppDatabase.getDatabase(applicationContext)
-        ClasseViewModelFactory(database.classeDao())
+        RacaViewModelFactory(database.racaDao())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Recuperando dados passados pela intent
-        val classeId = intent.getIntExtra("CLASSE_ID", -1)
-        val classeNome = intent.getStringExtra("CLASSE_NOME") ?: ""
-        val classeVariante = intent.getStringExtra("CLASSE_VARIANTE") ?: ""
+        //pega os dados do intent
+        val racaId = intent.getIntExtra("RACA_ID", -1)
+        val racaNome = intent.getStringExtra("RACA_NOME") ?: ""
+        val racaHabilidade = intent.getStringExtra("RACA_HABILIDADE") ?: ""
 
         setContent {
-            AtualizarClasseScreen(
+            AtualizarRacaScreen(
                 viewModel = viewModel,
-                classeId = classeId,
-                classeNome = classeNome,
-                classeVariante = classeVariante
+                racaId = racaId,
+                racaNome = racaNome,
+                racaHabilidade = racaHabilidade
             )
         }
     }
@@ -50,9 +55,10 @@ class AtualizarClasseActivity : ComponentActivity() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AtualizarClasseScreen(viewModel: ClasseViewModel, classeId: Int, classeNome: String, classeVariante: String) {
-    var nome by remember { mutableStateOf(classeNome) }
-    var variante by remember { mutableStateOf(classeVariante) }
+fun AtualizarRacaScreen(viewModel: RacaViewModel, racaId: Int, racaNome: String, racaHabilidade: String) {
+    var nome by remember { mutableStateOf(racaNome) }
+    var habilidadeEspecifica by remember { mutableStateOf(racaHabilidade) }
+    val context = LocalContext.current
 
     Column(modifier = Modifier.padding(16.dp)) {
         TextField(
@@ -62,15 +68,16 @@ fun AtualizarClasseScreen(viewModel: ClasseViewModel, classeId: Int, classeNome:
             modifier = Modifier.fillMaxWidth()
         )
         TextField(
-            value = variante,
-            onValueChange = { variante = it },
-            label = { Text("Classe Variante") },
+            value = habilidadeEspecifica,
+            onValueChange = { habilidadeEspecifica = it },
+            label = { Text("Habilidade Específica") },
             modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
         )
         Button(
             onClick = {
-                if (classeId != -1) {
-                    viewModel.atualizarClasse(Classe(id = classeId, nome = nome, variante = variante))
+                if (racaId != -1) {
+                    viewModel.atualizarRaca(Raca(id = racaId, nome = nome, habilidadeEspecifica = habilidadeEspecifica))
+                    Toast.makeText(context, "Raça atualizada!", Toast.LENGTH_SHORT).show()
                 }
             },
             modifier = Modifier.padding(top = 16.dp)
